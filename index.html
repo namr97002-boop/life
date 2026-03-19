@@ -3668,174 +3668,79 @@ tbody tr {
     50% { box-shadow: 0 0 20px 8px rgba(76, 201, 240, 0.2); }
     100% { box-shadow: 0 0 0 0 rgba(76, 201, 240, 0); }
 }
+/* ========== الحل النهائي لمشكلة الكتابة في البحث (أسود على أسود) ========== */
 
-/* ============= 🚀 تحسينات الأداء الفائقة - التمرير السريع ============= */
-
-/* متغيرات أداء للـ Browser */
-:root {
-    --scroll-behavior: smooth !important;
-    --will-change-transform: transform;
+/* حل عام لحقل الإدخال في شريط البحث الذكي */
+.smart-search-box input {
+    color: #ffffff !important; /* لون النص أبيض في جميع الأوضاع */
+    caret-color: #4cc9f0 !important; /* لون مؤشر الكتابة (العلامة الوامضة) */
 }
 
-/* تحسين التمرير العام */
-html {
-    scroll-behavior: smooth;
-    scroll-padding-top: 70px;
+/* عند التركيز على حقل البحث */
+.smart-search-box input:focus {
+    color: #000000 !important; /* لون النص أسود عند التركيز (ليظهر بوضوح) */
+    background-color: #ffffff !important; /* خلفية بيضاء عند التركيز */
 }
 
-body {
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch; /* iOS smooth scroll */
-    scrollbar-width: thin;
-    scrollbar-color: #4cc9f0 #1a1a2e;
+/* ===== حلول مخصصة لكل وضع ===== */
+
+/* الوضع العادي (النهاري) */
+[data-theme="normal"] .smart-search-box input {
+    color: #000000 !important; /* نص أسود في الوضع العادي */
+}
+[data-theme="normal"] .smart-search-box input:focus {
+    color: #000000 !important;
 }
 
-/* 🎯 حاوية الجدول الرئيسية - محسنة للغاية */
-.table-container {
-    overflow: auto !important;
-    -webkit-overflow-scrolling: touch !important;
-    scroll-behavior: smooth !important;
-    will-change: scroll-position, transform;
-    contain: content; /* تقليل عمليات الـ Reflow */
-    content-visibility: auto; /* تحميل المحتوى المرئي فقط */
-    contain-intrinsic-size: 0 500px; /* حجم تقريبي للمحتوى غير المرئي */
-    max-height: 75vh;
-    border-radius: 12px;
-    transition: all 0.1s ease;
-    transform: translateZ(0); /* تسريع الـ rendering */
-    backface-visibility: hidden;
-    perspective: 1000px;
+/* الوضع الليلي */
+[data-theme="night"] .smart-search-box input {
+    color: #ffffff !important; /* نص أبيض في الوضع الليلي */
+    background-color: #334155 !important; /* خلفية داكنة مناسبة */
+}
+[data-theme="night"] .smart-search-box input:focus {
+    color: #ffffff !important; /* يبقى النص أبيض عند التركيز */
+    background-color: #1e293b !important; /* خلفية داكنة قليلاً عند التركيز */
 }
 
-/* 🎯 الصفوف - تقليل العمليات على الـ DOM */
-tbody tr {
-    content-visibility: auto; /* تحميل الصفوف المرئية فقط */
-    contain-intrinsic-size: 0 60px; /* ارتفاع تقريبي للصف */
-    width: 100%;
-    transition: none; /* إزالة التأثيرات لتحسين الأداء */
+/* الوضع الداكن */
+[data-theme="dark"] .smart-search-box input {
+    color: #ffffff !important; /* نص أبيض */
+    background-color: #374151 !important; /* خلفية داكنة */
+}
+[data-theme="dark"] .smart-search-box input:focus {
+    color: #ffffff !important;
+    background-color: #111827 !important;
 }
 
-/* 🎯 تحسين عرض الصفوف الأولى (ثابتة) */
-.row-0, .row-1, .total-row {
-    content-visibility: visible; /* تبقى مرئية دائماً */
-    position: sticky;
-    z-index: 10;
-    transform: translateZ(0);
+/* ============= وضع العرض السريع (Quick View Mode) ============= */
+body.quick-view-mode .control-bar,
+body.quick-view-mode .status-bar,
+body.quick-view-mode .ai-analysis-card,
+body.quick-view-mode .charts-section,
+body.quick-view-mode .developer-signature,
+body.quick-view-mode .sync-all-btn,
+body.quick-view-mode .chart-toggle-btn,
+body.quick-view-mode .ai-toggle-control,
+body.quick-view-mode .memory-management,
+body.quick-view-mode .auto-month-indicator {
+    display: none !important;
 }
 
-/* 🎯 الخلايا القابلة للتعديل - تحسين التفاعل */
-.editable {
-    transition: background-color 0.05s ease; /* تقليل وقت التأثير */
-    cursor: text;
-    user-select: text;
-    -webkit-user-select: text;
+body.quick-view-mode .table-container {
+    max-height: 95vh;
+    border-radius: 0;
+    box-shadow: none;
 }
 
-/* 🎯 شريط التمرير المخصص - خفيف وسريع */
-.table-container::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-    background: transparent;
+body.quick-view-mode .app-container {
+    padding: 0;
+    max-width: 100%;
 }
 
-.table-container::-webkit-scrollbar-track {
-    background: rgba(76, 201, 240, 0.05);
-    border-radius: 10px;
-}
-
-.table-container::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #4cc9f0, #00b4d8);
-    border-radius: 10px;
-    border: 2px solid transparent;
-    background-clip: padding-box;
-    min-height: 40px; /* تجنب الاختفاء عند التمرير السريع */
-}
-
-.table-container::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #00b4d8, #0096c7);
-}
-
-/* 🎯 إخفاء العناصر غير المرئية لتحسين الأداء */
-.virtual-row {
-    contain: strict;
-    display: contents;
-}
-
-/* 🎯 تحسينات للـ PWA */
-@media (display-mode: standalone) {
-    body {
-        -webkit-tap-highlight-color: transparent;
-        user-select: none;
-    }
-    
-    .editable {
-        user-select: text;
-    }
-}
-
-/* 🎯 وضع الأداء العالي */
-.performance-mode .table-container {
-    scroll-behavior: auto; /* تعطيل التمرير السلس لزيادة السرعة */
-}
-
-.performance-mode * {
-    animation-duration: 0s !important;
-    transition-duration: 0s !important;
-}
-
-/* 🎯 تحسين عرض البيانات المخزنة مؤقتاً */
-.cached-row {
+/* ============= تحسينات وضع توفير البيانات ============= */
+.data-saver-active .table-container {
     opacity: 0.95;
-    filter: blur(0px);
-    transform: translateZ(0);
 }
-
-/* 🎯 مؤشر التحميل عند التمرير السريع */
-.scroll-loading-indicator {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #4cc9f0, #00b4d8, #4cc9f0);
-    animation: loadingShimmer 1.5s infinite;
-    opacity: 0;
-    pointer-events: none;
-    z-index: 1000;
-}
-
-@keyframes loadingShimmer {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
-}
-
-/* 🎯 تحسين أداء الـ Canvas للرسوم البيانية */
-.chart-canvas-container canvas {
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-    image-rendering: pixelated;
-    transform: translateZ(0);
-    backface-visibility: hidden;
-}
-
-/* 🎯 تحسينات الجوال */
-@media (max-width: 768px) {
-    .table-container {
-        max-height: 70vh;
-        -webkit-overflow-scrolling: touch;
-    }
-    
-    .table-container::-webkit-scrollbar {
-        width: 4px;
-        height: 4px;
-    }
-    
-    tbody tr {
-        contain-intrinsic-size: 0 50px;
-    }
-}
-
-/* ============= نهاية تحسينات الأداء ============= */
     </style>
 </head>
 
@@ -3975,6 +3880,29 @@ tbody tr {
                             <i class="fas fa-eye"></i>
                         </button>
                     </div>
+
+                    <!-- أزرار التحسينات الجديدة -->
+                    <div style="width: 2px; height: 30px; background: rgba(255,255,255,0.2); margin: 0 10px;"></div>
+                    
+                    <button @click="toggleDataSaverMode" 
+                            class="btn btn-sm text-white rounded-circle" 
+                            :class="{ 'text-success': dataSaverMode }"
+                            title="وضع توفير البيانات">
+                        <i class="fas fa-battery-quarter"></i>
+                    </button>
+                    
+                    <button @click="toggleQuickView" 
+                            class="btn btn-sm text-white rounded-circle" 
+                            :class="{ 'text-info': quickViewMode }"
+                            title="وضع العرض السريع">
+                        <i class="fas fa-eye-slash"></i>
+                    </button>
+                    
+                    <button @click="createAutoBackup" 
+                            class="btn btn-sm text-white rounded-circle" 
+                            title="إنشاء نسخة احتياطية">
+                        <i class="fas fa-save"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -5118,6 +5046,17 @@ createApp({
         const currentTheme = ref('normal');
         const focusMode = ref(false);
         
+        // ========== متغيرات التحسينات الجديدة ==========
+        const dataSaverMode = ref(false);
+        const quickViewMode = ref(false);
+        
+        const autoBackup = ref({
+          enabled: true,
+          lastBackup: null,
+          interval: 60 * 60 * 1000, // كل ساعة
+          maxBackups: 5
+        });
+        
         // نظام إدارة الذاكرة المتقدم
         const memoryManager = ref({
             enabled: true,
@@ -5165,13 +5104,51 @@ createApp({
         });
 
         const smartLoading = ref({
-            show: false,
-            title: '',
-            message: '',
-            icon: 'fas fa-sync-alt',
-            progress: 0,
-            hint: ''
+          show: false,
+          title: '',
+          message: '',
+          icon: 'fas fa-sync-alt',
+          progress: 0,
+          hint: '',
+          steps: [],
+          currentStep: 0
         });
+        
+        const showAdvancedLoading = (steps) => {
+          smartLoading.value = {
+            show: true,
+            title: steps[0].title,
+            message: steps[0].message,
+            icon: steps[0].icon || 'fas fa-sync-alt',
+            progress: 0,
+            hint: steps[0].hint || 'جاري التحميل...',
+            steps: steps,
+            currentStep: 0
+          };
+          
+          executeLoadingSteps();
+        };
+        
+        const executeLoadingSteps = async () => {
+          const steps = smartLoading.value.steps;
+          
+          for (let i = 0; i < steps.length; i++) {
+            smartLoading.value.currentStep = i;
+            smartLoading.value.title = steps[i].title;
+            smartLoading.value.message = steps[i].message;
+            smartLoading.value.icon = steps[i].icon || 'fas fa-sync-alt';
+            smartLoading.value.hint = steps[i].hint || '';
+            smartLoading.value.progress = Math.round(((i + 1) / steps.length) * 100);
+            
+            if (steps[i].action) {
+              await steps[i].action();
+            } else {
+              await new Promise(r => setTimeout(r, steps[i].duration || 1000));
+            }
+          }
+          
+          smartLoading.value.show = false;
+        };
 
         // ========== متغيرات AI ==========
         const aiStats = ref({
@@ -5212,6 +5189,131 @@ createApp({
         const debtChartFullscreen = ref(null);
         const consumptionChartFullscreen = ref(null);
         const monthlyChartFullscreen = ref(null);
+
+        // ========== نظام التخزين المؤقت المحسّن ==========
+        const AdvancedCache = {
+          data: new Map(),
+          maxAge: 30 * 60 * 1000, // 30 دقيقة
+          
+          set(key, value, ttl = this.maxAge) {
+            this.data.set(key, {
+              value,
+              expires: Date.now() + ttl
+            });
+            this.autoCleanup();
+          },
+          
+          get(key) {
+            const item = this.data.get(key);
+            if (!item) return null;
+            if (Date.now() > item.expires) {
+              this.data.delete(key);
+              return null;
+            }
+            return item.value;
+          },
+          
+          autoCleanup() {
+            if (this.data.size > 100) {
+              const now = Date.now();
+              for (let [key, item] of this.data) {
+                if (now > item.expires) this.data.delete(key);
+              }
+            }
+          },
+          
+          clear() {
+            this.data.clear();
+            showSyncIndicator?.('🧹 تم تنظيف الذاكرة المؤقتة', 'success');
+          }
+        };
+
+        // ========== دوال التحسينات الجديدة ==========
+        
+        // دالة تبديل وضع توفير البيانات
+        const toggleDataSaverMode = () => {
+          dataSaverMode.value = !dataSaverMode.value;
+          localStorage.setItem('waterSystem_dataSaver', JSON.stringify(dataSaverMode.value));
+          
+          if (dataSaverMode.value) {
+            memoryManager.value.compressionEnabled = true;
+            memoryManager.value.maxCacheSize = 5 * 1024 * 1024;
+            showSyncIndicator('✅ تم تفعيل وضع توفير البيانات', 'info');
+          } else {
+            memoryManager.value.compressionEnabled = false;
+            memoryManager.value.maxCacheSize = 10 * 1024 * 1024;
+            showSyncIndicator('⚠️ تم إلغاء وضع توفير البيانات', 'info');
+          }
+        };
+        
+        // دالة تبديل وضع العرض السريع
+        const toggleQuickView = () => {
+          quickViewMode.value = !quickViewMode.value;
+          
+          if (quickViewMode.value) {
+            document.body.classList.add('quick-view-mode');
+            showSyncIndicator('👁️ تم تفعيل وضع العرض السريع', 'info');
+          } else {
+            document.body.classList.remove('quick-view-mode');
+            showSyncIndicator('👁️ تم إلغاء وضع العرض السريع', 'info');
+          }
+        };
+        
+        // دالة إنشاء نسخة احتياطية
+        const createAutoBackup = () => {
+          if (!autoBackup.value.enabled) return;
+          
+          const backup = {
+            id: Date.now(),
+            timestamp: new Date().toLocaleString('ar-SA'),
+            data: {
+              villageData: villageData.value,
+              pendingChanges: dataCache.value.pendingChanges,
+              selectedVillage: selectedVillage.value,
+              selectedMonth: selectedMonth.value
+            }
+          };
+          
+          const backups = JSON.parse(localStorage.getItem('waterSystem_backups') || '[]');
+          backups.unshift(backup);
+          
+          if (backups.length > autoBackup.value.maxBackups) {
+            backups.pop();
+          }
+          
+          localStorage.setItem('waterSystem_backups', JSON.stringify(backups));
+          autoBackup.value.lastBackup = backup.timestamp;
+          
+          showSyncIndicator('💾 تم إنشاء نسخة احتياطية تلقائية', 'success');
+        };
+        
+        // دالة استعادة نسخة احتياطية
+        const restoreFromBackup = (backupId) => {
+          const backups = JSON.parse(localStorage.getItem('waterSystem_backups') || '[]');
+          const backup = backups.find(b => b.id === backupId);
+          
+          if (backup && confirm('هل أنت متأكد من استعادة هذه النسخة؟')) {
+            villageData.value = backup.data.villageData;
+            dataCache.value.pendingChanges = backup.data.pendingChanges;
+            selectedVillage.value = backup.data.selectedVillage;
+            selectedMonth.value = backup.data.selectedMonth;
+            
+            showSyncIndicator('✅ تم استعادة النسخة الاحتياطية بنجاح', 'success');
+          }
+        };
+        
+        // دالة التحميل المحسّن
+        const loadDataOptimized = async (forceRefresh = false) => {
+          if (dataSaverMode.value && !forceRefresh) {
+            const cached = AdvancedCache.get(`${selectedVillage.value}_${selectedMonth.value}`);
+            if (cached) {
+              villageData.value = cached;
+              showSyncIndicator('📦 بيانات من الذاكرة المؤقتة (وضع التوفير)', 'info');
+              return;
+            }
+          }
+          await loadData(forceRefresh);
+        };
 
         // ========== دوال سجل الحضور الموحد ==========
         const sendAttendanceToServer = async (user, passwordUsed) => {
@@ -6032,20 +6134,263 @@ ${analysis.collectionRate >= 80 && analysis.totalDebt < 500000 ? 'أداء مم�
             alert(insights);
         };
 
-// ========== دوال البحث الذكي الفائقة ==========
+// ================== الإصدار النهائي المتكامل - محلول محل الأول ==================
+
+// ================== دوال البحث الذكي الفائقة (محفوظة من الأول) ==================
 const VILLAGES = ['السوفعي', 'العليا', 'السفلى', 'الشعابي', 'الجبل', 'حيزان', 'رقش', 'الضرفة'];
 
-// ===== تحويل الأرقام العربية =====
+// ===== تحويل الأرقام العربية (محفوظة) =====
 const convertArabicNumbers = (text) => {
     if (!text) return '';
     const arabicNumbers = { '٠':'0','١':'1','٢':'2','٣':'3','٤':'4','٥':'5','٦':'6','٧':'7','٨':'8','٩':'9' };
     return text.toString().replace(/[٠-٩]/g, char => arabicNumbers[char] || char);
 };
 
-// ===== تنظيف الأسماء =====
+// ===== تنظيف الأسماء (محفوظة) =====
 const cleanName = (name) => name.replace(/\s+/g,' ').trim();
 
-// ===== تحليل الاستعلام =====
+// ===== تمثيل الديون (محفوظة) =====
+const getDebtLevelClass = (remaining) => remaining>=5000?'high':remaining>=1000?'medium':'low';
+
+// ================== CONFIG ==================
+const CONFIG = {
+  VILLAGES: VILLAGES,
+  MAX_VALUE: 100000,
+  MONTHS: 12,
+  CACHE_SIZE: 50,
+  IGNORE: [
+    'كم','عليه','مسلم','دفع','سدد','قراءة','حالي',
+    'شهر','قرية','في','الى','عن','من','لو','سمحت',
+    'سجل','اضف','حول','غير','بدل','انتقل','اذهب',
+    'عرض','أظهر','كل','جميع','ال','و','ف','ب','ل'
+  ],
+  KEYWORDS: {
+    pay: ['مسلم','دفع','سدد','ادفع','سداد'],
+    read: ['قراءة','حالي','عداد','قرا','حال'],
+    ask: ['كم','قد','ايش','ماهو','وش','عليه','متبقي','باقي'],
+    change: ['غير','بدل','حول','انتقل','اذهب'],
+    all: ['كل','جميع','الكل'],
+    help: ['مساعدة','شرح','كيف']
+  }
+};
+
+// ================== UTILS ==================
+const Util = {
+  normalize(text = '') {
+    return convertArabicNumbers(text)
+      .toLowerCase()
+      .replace(/[^\w\s\u0600-\u06FF]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  },
+  extractNumber(text) {
+    const m = text.match(/\d{1,6}/);
+    return m ? parseInt(m[0]) : null;
+  },
+  formatNumber(num) {
+    return num?.toLocaleString('ar-EG') || '0';
+  },
+  similarity(a, b) {
+    if (!a || !b) return 0;
+    let matches = 0;
+    for (let c of a) if (b.includes(c)) matches++;
+    return matches / Math.max(a.length, b.length);
+  },
+  now() { return Date.now(); }
+};
+
+// ================== CACHE ==================
+const Cache = {
+  data: new Map(),
+  searches: new Map(),
+  lastCleanup: Date.now(),
+  
+  setVillage(village, month, data) {
+    const key = `${village}_${month}`;
+    this.data.set(key, { data, time: Date.now(), hits: 0 });
+    this.cleanup();
+  },
+  
+  getVillage(village, month) {
+    const key = `${village}_${month}`;
+    const cached = this.data.get(key);
+    if (cached) { cached.hits++; return cached.data; }
+    return null;
+  },
+  
+  setSearch(query, results) { 
+    this.searches.set(query, { results, time: Date.now() }); 
+  },
+  
+  getSearch(query) {
+    const cached = this.searches.get(query);
+    if (cached && (Date.now() - cached.time) < 3600000) return cached.results;
+    return null;
+  },
+  
+  cleanup() {
+    const now = Date.now();
+    if (now - this.lastCleanup < 300000) return;
+    for (let [key, value] of this.data) if (now - value.time > 86400000) this.data.delete(key);
+    for (let [key, value] of this.searches) if (now - value.time > 3600000) this.searches.delete(key);
+    this.lastCleanup = now;
+  },
+  
+  stats() { 
+    return { 
+      villages: this.data.size, 
+      searches: this.searches.size, 
+      total: this.data.size + this.searches.size 
+    }; 
+  }
+};
+
+// ================== CONTEXT ==================
+const Context = {
+  current: {
+    village: localStorage.getItem('lastVillage') || null,
+    month: localStorage.getItem('lastMonth') || 'شهر 1',
+    name: null,
+    type: null,
+    value: null,
+    lastName: null
+  },
+  history: [],
+  stats: { searches:0, operations:0, changes:0 },
+  
+  update(data){
+    if(data.village) { this.current.village=data.village; localStorage.setItem('lastVillage',data.village); }
+    if(data.month) { this.current.month=data.month; localStorage.setItem('lastMonth',data.month); }
+    if(data.name){ this.current.name=data.name; this.current.lastName=data.name; this.stats.searches++; }
+    if(data.type){ this.current.type=data.type; this.stats.operations++; }
+    if(data.value) this.current.value=data.value;
+    
+    this.history.unshift({...this.current, time:Date.now()});
+    if(this.history.length>10) this.history.pop();
+  },
+  
+  getLast(type){ return this.current[type]; },
+  getHistory(){ return this.history; },
+  hasChanged(type,value){ return this.current[type]!==value; }
+};
+
+// ================== SMART SEARCH ==================
+const SmartSearch = {
+  run(query, data) {
+    if (!data?.length) return [];
+    const cached = Cache.getSearch(query);
+    if (cached) return cached;
+    
+    const q = Util.normalize(query);
+    const results = [];
+    const isNumber = /^\d+$/.test(q);
+    
+    for (let i = 2; i < data.length; i++) {
+      const row = data[i];
+      if (getRowClass?.(i,row) === 'total-row') continue;
+      
+      const name = Util.normalize(row[1] || '');
+      const meter = (row[0] || '').toString();
+      
+      if (!name && !meter) continue;
+      
+      let score = 0, matchType = '';
+      
+      if (isNumber) {
+        if (meter === q) { score = 100; matchType = 'رقم تام'; }
+        else if (meter.includes(q)) { score = 80; matchType = 'رقم جزئي'; }
+      }
+      
+      if (score === 0) {
+        if (name === q) { score = 100; matchType='اسم تام'; }
+        else if (name.startsWith(q)) { score=85; matchType='يبدأ بـ'; }
+        else if (name.includes(q)) { score=70; matchType='يحتوي على'; }
+        else { 
+          const sim = Util.similarity(name,q); 
+          if(sim>0.6){
+            score=Math.round(sim*60); 
+            matchType='تشابه';
+          }
+        }
+      }
+      
+      if (score>0) {
+        results.push({
+          originalIndex: i,
+          meterNumber: row[0],
+          name: row[1],
+          rowData: row,
+          score,
+          matchType,
+          remaining: parseFloat(row[12]||0),
+          paid: parseFloat(row[11]||0),
+          total: parseFloat(row[9]||0),
+          description: `${row[0]||''} - ${parseFloat(row[12]||0).toLocaleString()}`
+        });
+      }
+    }
+    
+    const sorted = results.sort((a,b)=>b.score-a.score);
+    if(sorted.length>0) Cache.setSearch(query, sorted.slice(0,20));
+    return sorted;
+  },
+  
+  suggest(query, context) {
+    const q = Util.normalize(query);
+    const suggestions = [];
+    
+    CONFIG.VILLAGES.forEach(v => { 
+      if(!q || v.includes(q)) suggestions.push({ 
+        text: v, 
+        desc: '🏘️ التبديل إلى هذه القرية', 
+        type: 'village', 
+        icon: '🏘️',
+        isSuggestion: true 
+      }); 
+    });
+    
+    for(let i=1; i<=CONFIG.MONTHS; i++){ 
+      const month = `شهر ${i}`; 
+      if(!q || month.includes(q)) suggestions.push({ 
+        text: month, 
+        desc: '📅 التبديل إلى هذا الشهر', 
+        type: 'month', 
+        icon: '📅',
+        isSuggestion: true 
+      });
+    }
+    
+    if(!q || 'مسلم'.includes(q)) suggestions.push({ 
+      text: 'مسلم 5000', 
+      desc: '💰 تسديد مبلغ', 
+      type: 'action', 
+      icon: '💰',
+      isSuggestion: true 
+    });
+    
+    if(!q || 'قراءة'.includes(q)) suggestions.push({ 
+      text: 'قراءة 250', 
+      desc: '📊 تسجيل قراءة جديدة', 
+      type: 'action', 
+      icon: '📊',
+      isSuggestion: true 
+    });
+    
+    if(context?.lastName && (!q || context.lastName.includes(q))) {
+      suggestions.push({ 
+        text: context.lastName, 
+        desc: '🕒 آخر بحث', 
+        type: 'recent', 
+        icon: '🕒',
+        isSuggestion: true 
+      });
+    }
+    
+    return suggestions.slice(0,8);
+  }
+};
+
+// ================== تحليل الاستعلام (مطوّر) =====
 const analyzeSearchQuery = (query) => {
     const result = {
         hasOperation:false,
@@ -6058,29 +6403,44 @@ const analyzeSearchQuery = (query) => {
         value:null,
         rawQuery:query
     };
+    
     if(!query) return result;
     const trimmed = convertArabicNumbers(query).trim();
     const words = trimmed.split(/\s+/);
 
     // 1- تغيير قرية فقط
-    if(VILLAGES.includes(trimmed)){ result.hasVillageChange=true; result.village=trimmed; return result; }
+    if(VILLAGES.includes(trimmed)){ 
+        result.hasVillageChange=true; 
+        result.village=trimmed; 
+        return result; 
+    }
 
     // 2- تغيير شهر فقط
     if(trimmed.startsWith('شهر ')){ 
         const num = trimmed.substring(4).trim();
-        if(/^\d+$/.test(num)){ result.hasMonthChange=true; result.month=`شهر ${num}`; return result; }
+        if(/^\d+$/.test(num)){ 
+            result.hasMonthChange=true; 
+            result.month=`شهر ${num}`; 
+            return result; 
+        }
     }
 
     // 3- تغيير قرية + شهر (+عملية)
     if(words.length>=3 && VILLAGES.includes(words[0]) && words[1]==='شهر' && /^\d+$/.test(words[2])){
-        result.village = words[0]; result.month=`شهر ${words[2]}`;
-        result.hasVillageChange=true; result.hasMonthChange=true;
+        result.village = words[0]; 
+        result.month=`شهر ${words[2]}`;
+        result.hasVillageChange=true; 
+        result.hasMonthChange=true;
+        
         if(words.length>=6){
             const name = words.slice(3,words.length-2).join(' ');
-            const op = words[words.length-2]; const val = words[words.length-1];
+            const op = words[words.length-2]; 
+            const val = words[words.length-1];
             if(/^\d+$/.test(val) && (op.includes('مسلم')||op.includes('حالي'))){
-                result.hasOperation=true; result.name=cleanName(name);
-                result.operation=op.includes('مسلم')?'paid':'current'; result.value=parseInt(val);
+                result.hasOperation=true; 
+                result.name=cleanName(name);
+                result.operation=op.includes('مسلم')?'paid':'current'; 
+                result.value=parseInt(val);
                 return result;
             }
         }
@@ -6089,10 +6449,13 @@ const analyzeSearchQuery = (query) => {
 
     // 4- عملية فقط (اسم+عملية+قيمة)
     if(words.length>=3){
-        const last = words[words.length-1]; const second = words[words.length-2];
+        const last = words[words.length-1]; 
+        const second = words[words.length-2];
         if(/^\d+$/.test(last) && (second.includes('مسلم')||second.includes('حالي'))){
-            result.hasOperation=true; result.name=cleanName(words.slice(0,words.length-2).join(' '));
-            result.operation=second.includes('مسلم')?'paid':'current'; result.value=parseInt(last);
+            result.hasOperation=true; 
+            result.name=cleanName(words.slice(0,words.length-2).join(' '));
+            result.operation=second.includes('مسلم')?'paid':'current'; 
+            result.value=parseInt(last);
             return result;
         }
     }
@@ -6102,205 +6465,407 @@ const analyzeSearchQuery = (query) => {
     return result;
 };
 
-// ===== تغيير البيانات =====
+// ===== تغيير البيانات (محفوظة ومطوّرة) =====
 const changeVillageOnly = async (village) => {
-    if(!villageAPIs?.[village]){ showSyncIndicator?.(`القرية ${village} غير موجودة`,'error'); return; }
+    if(!villageAPIs?.[village]){ 
+        showSyncIndicator?.(`القرية ${village} غير موجودة`,'error'); 
+        return; 
+    }
     selectedVillage.value=village;
     const month = selectedMonth.value||'شهر 1';
     showSyncIndicator?.(`🔄 تحميل ${village}`,'info');
+    
     try{
         const res = await fetch(`${villageAPIs[village]}?sheet=${encodeURIComponent(month)}&t=${Date.now()}`);
         if(!res.ok) throw new Error('فشل الاتصال');
         villageData.value = await res.json();
+        
+        // تحديث الكاش
+        Cache.setVillage(village, month, villageData.value);
+        
         showSyncIndicator?.(`✅ تم التبديل إلى ${village}`,'success');
-        showSearchResults.value=false; searchQuery.value='';
-        updateAIStats?.(); if(chartsVisible?.value) initializeCharts?.();
-    }catch(e){ console.error(e); showSyncIndicator?.('❌ فشل تحميل البيانات','error'); }
+        showSearchResults.value=false; 
+        searchQuery.value='';
+        updateAIStats?.(); 
+        if(chartsVisible?.value) initializeCharts?.();
+        
+        // تحديث السياق
+        Context.update({village});
+    }catch(e){ 
+        console.error(e); 
+        showSyncIndicator?.('❌ فشل تحميل البيانات','error'); 
+    }
 };
 
 const changeMonthOnly = async (month) => {
-    if(!selectedVillage.value){ showSyncIndicator?.('الرجاء اختيار قرية أولاً','error'); return; }
-    selectedMonth.value=month; showSyncIndicator?.(`🔄 تحميل ${month}`,'info');
+    if(!selectedVillage.value){ 
+        showSyncIndicator?.('الرجاء اختيار قرية أولاً','error'); 
+        return; 
+    }
+    selectedMonth.value=month; 
+    showSyncIndicator?.(`🔄 تحميل ${month}`,'info');
+    
     try{
         const res = await fetch(`${villageAPIs[selectedVillage.value]}?sheet=${encodeURIComponent(month)}&t=${Date.now()}`);
         if(!res.ok) throw new Error('فشل الاتصال');
         villageData.value = await res.json();
+        
+        // تحديث الكاش
+        Cache.setVillage(selectedVillage.value, month, villageData.value);
+        
         showSyncIndicator?.(`✅ تم التبديل إلى ${month}`,'success');
-        showSearchResults.value=false; searchQuery.value='';
-        updateAIStats?.(); if(chartsVisible?.value) initializeCharts?.();
-    }catch(e){ console.error(e); showSyncIndicator?.('❌ فشل تحميل البيانات','error'); }
+        showSearchResults.value=false; 
+        searchQuery.value='';
+        updateAIStats?.(); 
+        if(chartsVisible?.value) initializeCharts?.();
+        
+        // تحديث السياق
+        Context.update({month});
+    }catch(e){ 
+        console.error(e); 
+        showSyncIndicator?.('❌ فشل تحميل البيانات','error'); 
+    }
 };
 
 const changeVillageAndMonth = async (village,month) => {
-    if(!villageAPIs?.[village]){ showSyncIndicator?.(`القرية ${village} غير موجودة`,'error'); return; }
-    selectedVillage.value=village; selectedMonth.value=month;
+    if(!villageAPIs?.[village]){ 
+        showSyncIndicator?.(`القرية ${village} غير موجودة`,'error'); 
+        return; 
+    }
+    selectedVillage.value=village; 
+    selectedMonth.value=month;
     showSyncIndicator?.(`🔄 تحميل ${village} - ${month}`,'info');
+    
     try{
         const res = await fetch(`${villageAPIs[village]}?sheet=${encodeURIComponent(month)}&t=${Date.now()}`);
         if(!res.ok) throw new Error('فشل الاتصال');
         villageData.value = await res.json();
+        
+        // تحديث الكاش
+        Cache.setVillage(village, month, villageData.value);
+        
         showSyncIndicator?.(`✅ تم التبديل إلى ${village} - ${month}`,'success');
-        showSearchResults.value=false; searchQuery.value='';
-        updateAIStats?.(); if(chartsVisible?.value) initializeCharts?.();
-    }catch(e){ console.error(e); showSyncIndicator?.('❌ فشل تحميل البيانات','error'); }
+        showSearchResults.value=false; 
+        searchQuery.value='';
+        updateAIStats?.(); 
+        if(chartsVisible?.value) initializeCharts?.();
+        
+        // تحديث السياق
+        Context.update({village, month});
+    }catch(e){ 
+        console.error(e); 
+        showSyncIndicator?.('❌ فشل تحميل البيانات','error'); 
+    }
 };
 
-// ===== تنفيذ العمليات =====
+// ===== تنفيذ العمليات (محفوظة) =====
 const getFieldName = (op)=>op==='paid'?'المسلم':'القراءة الحالية';
 const getFieldIndex = (op)=>op==='paid'?11:3;
 
 const executeOperation = async (item)=>{
     if(!item) return;
-    const idx=item.originalIndex; const fi=getFieldIndex(item.operation); const val=item.value.toString();
-    if(!currentUser.value?.permissions?.canEdit.includes(fi)){ showSyncIndicator?.(`⛔ لا توجد صلاحية لتعديل ${getFieldName(item.operation)}`,'error'); return; }
-    villageData.value[idx][fi]=val; saveChangeLocally?.(idx,fi,val,item.meterNumber);
+    const idx=item.originalIndex; 
+    const fi=getFieldIndex(item.operation); 
+    const val=item.value.toString();
+    
+    if(!currentUser.value?.permissions?.canEdit.includes(fi)){ 
+        showSyncIndicator?.(`⛔ لا توجد صلاحية لتعديل ${getFieldName(item.operation)}`,'error'); 
+        return; 
+    }
+    
+    villageData.value[idx][fi]=val; 
+    saveChangeLocally?.(idx,fi,val,item.meterNumber);
     showSyncIndicator?.(`✅ تم تسجيل ${val} في ${getFieldName(item.operation)} للمشترك ${item.name}`,'success');
-    updateAIStats?.(); if(chartsVisible?.value) initializeCharts?.();
+    updateAIStats?.(); 
+    if(chartsVisible?.value) initializeCharts?.();
     requestAnimationFrame(()=>scrollToRow(idx));
+    
+    // تحديث السياق
+    Context.update({type:item.operation, value:item.value, name:item.name});
 };
 
-// ===== البحث =====
+// ===== البحث والتنفيذ (مطوّر) =====
 const searchAndExecuteInCurrentVillage = (analysis)=>{
-    if(!villageData.value?.length){ showSyncIndicator?.('لا توجد بيانات','error'); return; }
-    const name = analysis.name.toLowerCase(); const matching=[];
-    for(let i=2;i<villageData.value.length;i++){
-        const row = villageData.value[i]; if(getRowClass?.(i,row)==='total-row') continue;
-        const rowName=(row[1]||'').toString();
-        if(rowName.toLowerCase().includes(name)){
-            matching.push({ originalIndex:i, meterNumber:row[0]||'', name:rowName, rowData:row, operation:analysis.operation, value:analysis.value });
-            if(rowName.toLowerCase()===name) break;
-        }
+    if(!villageData.value?.length){ 
+        showSyncIndicator?.('لا توجد بيانات','error'); 
+        return; 
     }
-    if(matching.length===0) performRegularSearch(analysis.name);
-    else if(matching.length===1){ executeOperation(matching[0]); showSearchResults.value=false; searchQuery.value=''; }
+    
+    const name = analysis.name.toLowerCase(); 
+    const results = SmartSearch.run(analysis.name, villageData.value);
+    
+    if(results.length === 0){
+        performRegularSearch(analysis.name);
+    }
+    else if(results.length === 1){ 
+        if(analysis.hasOperation){
+            executeOperation({
+                ...results[0],
+                operation: analysis.operation,
+                value: analysis.value
+            });
+        } else {
+            scrollToRow(results[0].originalIndex);
+        }
+        showSearchResults.value=false; 
+        searchQuery.value=''; 
+    }
     else{
-        smartSearchResults.value=matching.map(it=>({
-            originalIndex: it.originalIndex,
-            meterNumber: it.meterNumber,
-            name: it.name,
-            remaining: parseFloat(it.rowData[12]||0),
-            paid: parseFloat(it.rowData[11]||0),
-            total: parseFloat(it.rowData[9]||0),
-            isMultiResult:true,
-            operation:it.operation,
-            value:it.value,
-            description:`عداد: ${it.meterNumber} | اضغط للتسجيل`
+        smartSearchResults.value = results.map(r => ({
+            ...r,
+            isMultiResult: true,
+            operation: analysis.operation,
+            value: analysis.value,
+            description: `عداد: ${r.meterNumber} | المتبقي: ${Util.formatNumber(r.remaining)}`
         }));
-        showSyncIndicator?.(`${matching.length} نتائج`,'info');
+        showSyncIndicator?.(`${results.length} نتائج`,'info');
     }
 };
 
 const performRegularSearch=(query)=>{
-    if(!query||!villageData.value) return;
-    const lq=query.toLowerCase(); const results=[];
-    for(let i=2;i<villageData.value.length;i++){
-        const row=villageData.value[i]; if(getRowClass?.(i,row)==='total-row') continue;
-        if((row[0]||'').toString().toLowerCase().includes(lq)||(row[1]||'').toString().toLowerCase().includes(lq)){
-            results.push({
-                originalIndex:i,
-                meterNumber:row[0]||'',
-                name:row[1]||'',
-                remaining:parseFloat(row[12]||0),
-                paid:parseFloat(row[11]||0),
-                total:parseFloat(row[9]||0),
-                rowData:row,
-                description:`${row[0]||''} - ${parseFloat(row[12]||0).toLocaleString()}`
-            });
-            if(results.length>=50) break;
-        }
+    if(!query || !villageData.value) return;
+    const results = SmartSearch.run(query, villageData.value);
+    
+    if(results.length === 0 && query.length >= 2){
+        showSearchSuggestions(query);
+    } else {
+        smartSearchResults.value = results;
+        if(results.length > 0) showSyncIndicator?.(`${results.length} نتيجة`,'success');
     }
-    smartSearchResults.value=results;
-    if(results.length===0&&query.length>=2) showSearchSuggestions(query);
-    else if(results.length>0) showSyncIndicator?.(`${results.length} نتيجة`,'success');
 };
 
 const showSearchSuggestions=(query)=>{
-    const suggestions=[
-        ...VILLAGES.map(v=>({text:v,desc:`التبديل إلى ${v}`})),
-        ...Array.from({length:12},(_,i)=>({text:`شهر ${i+1}`,desc:`التبديل إلى شهر ${i+1}`})),
-        {text:'مسلم 5000',desc:'تسجيل 5000 في المسلم'},
-        {text:'حالية 120',desc:'تسجيل 120 في القراءة'}
-    ];
-    smartSearchResults.value=suggestions.filter(s=>!query||s.text.includes(query)).slice(0,8)
-        .map(s=>({originalIndex:-1,name:s.text,isSuggestion:true,description:s.desc}));
+    const suggestions = SmartSearch.suggest(query, Context.current);
+    smartSearchResults.value = suggestions;
 };
 
-// ===== التنفيذ الرئيسي =====
+// ===== التنفيذ الرئيسي (مطوّر) =====
 const executeSmartSearch=()=>{
     const query=searchQuery.value?.trim()||'';
-    if(!query){ smartSearchResults.value=[]; showSearchResults.value=false; return; }
+    if(!query){ 
+        smartSearchResults.value=[]; 
+        showSearchResults.value=false; 
+        return; 
+    }
+    
     showSearchResults.value=true;
-    if(!villageData.value?.length){ showSearchSuggestions(query); return; }
+    
+    if(!villageData.value?.length){ 
+        showSearchSuggestions(query); 
+        return; 
+    }
+    
     const analysis=analyzeSearchQuery(query);
-    if(analysis.hasVillageChange||analysis.hasMonthChange){
-        if(analysis.hasVillageChange&&analysis.hasMonthChange){
-            if(analysis.hasOperation){ changeVillageAndMonth(analysis.village,analysis.month).then(()=>searchAndExecuteInCurrentVillage(analysis)); }
-            else changeVillageAndMonth(analysis.village,analysis.month);
-        } else if(analysis.hasVillageChange) changeVillageOnly(analysis.village);
+    
+    if(analysis.hasVillageChange || analysis.hasMonthChange){
+        if(analysis.hasVillageChange && analysis.hasMonthChange){
+            if(analysis.hasOperation){ 
+                changeVillageAndMonth(analysis.village, analysis.month).then(()=>{
+                    searchAndExecuteInCurrentVillage(analysis);
+                }); 
+            }
+            else changeVillageAndMonth(analysis.village, analysis.month);
+        } 
+        else if(analysis.hasVillageChange) changeVillageOnly(analysis.village);
         else if(analysis.hasMonthChange) changeMonthOnly(analysis.month);
-    } else if(analysis.hasOperation) searchAndExecuteInCurrentVillage(analysis);
-    else if(analysis.name) performRegularSearch(analysis.name);
-    else showSearchSuggestions(query);
+    } 
+    else if(analysis.hasOperation) {
+        searchAndExecuteInCurrentVillage(analysis);
+    }
+    else if(analysis.name) {
+        performRegularSearch(analysis.name);
+    }
+    else {
+        showSearchSuggestions(query);
+    }
 };
 
-// ===== البحث الصوتي =====
-const startVoiceRecognition=()=>{
+// ===== البحث الصوتي المحسّن =====
+const startVoiceRecognition = () => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if(!SpeechRecognition){ alert("متصفحك لا يدعم البحث الصوتي"); return; }
-    const recognition=new SpeechRecognition();
-    recognition.lang='ar-SA'; recognition.interimResults=false; isRecording.value=true;
-    recognition.onresult=(e)=>{ searchQuery.value=e.results[0][0].transcript; executeSmartSearch(); isRecording.value=false; };
-    recognition.onerror=()=>{ isRecording.value=false; showSyncIndicator?.('❌ فشل التعرف الصوتي','error'); };
-    recognition.onend=()=>{ isRecording.value=false; };
-    try{ recognition.start(); showSyncIndicator?.('🎤 تحدث الآن...','info'); }catch(e){ isRecording.value=false; }
+    if (!SpeechRecognition) {
+      alert("❌ متصفحك لا يدعم البحث الصوتي. جرب استخدام Google Chrome أو Edge.");
+      return;
+    }
+    
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'ar-SA';
+    recognition.continuous = false;
+    recognition.interimResults = true;
+    recognition.maxAlternatives = 3;
+    
+    isRecording.value = true;
+    
+    let silenceTimer;
+    
+    recognition.onresult = (event) => {
+      clearTimeout(silenceTimer);
+      silenceTimer = setTimeout(() => recognition.stop(), 2000);
+      
+      const last = event.results.length - 1;
+      const transcript = event.results[last][0].transcript;
+      
+      searchQuery.value = transcript;
+      
+      if (event.results[last].isFinal) {
+        executeSmartSearch();
+        isRecording.value = false;
+      }
+    };
+    
+    recognition.onerror = (event) => {
+      isRecording.value = false;
+      clearTimeout(silenceTimer);
+      
+      const errors = {
+        'no-speech': '🎤 لم يتم سماع صوت، حاول مرة أخرى',
+        'audio-capture': '🎤 لم يتم العثور على ميكروفون',
+        'not-allowed': '🔇 تم رفض الإذن للميكروفون',
+        'network': '🌐 خطأ في الشبكة'
+      };
+      
+      showSyncIndicator?.(errors[event.error] || '❌ فشل التعرف الصوتي', 'error');
+    };
+    
+    recognition.onend = () => {
+      isRecording.value = false;
+      clearTimeout(silenceTimer);
+    };
+    
+    try {
+      recognition.start();
+      silenceTimer = setTimeout(() => recognition.stop(), 5000);
+      showSyncIndicator?.('🎤 استمع... تحدث الآن', 'info');
+    } catch (e) {
+      isRecording.value = false;
+      showSyncIndicator?.('❌ فشل بدء التسجيل الصوتي', 'error');
+    }
 };
 
-// ===== تمثيل الديون =====
-const getDebtLevelClass=(remaining)=> remaining>=5000?'high':remaining>=1000?'medium':'low';
-
-// ===== اختيار نتيجة البحث =====
+// ===== اختيار نتيجة البحث (محسّن) =====
 const selectSearchResult=(res)=>{
     if(!res) return;
-    if(res.isSuggestion){ searchQuery.value=res.name; executeSmartSearch(); return; }
-    if(res.isMultiResult){ executeOperation(res); showSearchResults.value=false; searchQuery.value=''; return; }
-    showSearchResults.value=false; scrollToRow(res.originalIndex); searchQuery.value='';
+    
+    if(res.isSuggestion){ 
+        searchQuery.value = res.text || res.name; 
+        executeSmartSearch(); 
+        return; 
+    }
+    
+    if(res.isMultiResult){ 
+        if(res.operation && res.value){
+            executeOperation(res);
+        } else {
+            scrollToRow(res.originalIndex);
+        }
+        showSearchResults.value=false; 
+        searchQuery.value=''; 
+        return; 
+    }
+    
+    showSearchResults.value=false; 
+    scrollToRow(res.originalIndex); 
+    searchQuery.value='';
 };
 
-// ===== تمرير الصفوف =====
+// ===== تمرير الصفوف (محفوظة) =====
 const scrollToRow=(idx)=>{
     if(idx===-1) return;
     requestAnimationFrame(()=>{
         const row=document.querySelectorAll('.table-container tbody tr')[idx];
-        if(row){ row.scrollIntoView({behavior:'smooth',block:'center'}); row.classList.add('highlighted'); setTimeout(()=>row.classList.remove('highlighted'),1000);}
+        if(row){ 
+            row.scrollIntoView({behavior:'smooth',block:'center'}); 
+            row.classList.add('highlighted'); 
+            setTimeout(()=>row.classList.remove('highlighted'),1000);
+        }
     });
 };
+// ===== إخفاء النتائج فقط عند الضغط خارج منطقة البحث =====
+document.addEventListener('click', function(event) {
+    // تأكد أن النتائج ظاهرة أولاً
+    if (!showSearchResults.value) return;
+    
+    // انتظر قليلاً للتأكد أن الحدث ليس من داخل البحث
+    setTimeout(() => {
+        const searchBox = document.querySelector('[aria-label="بحث ذكي"], .search-box, input[type="text"]');
+        const resultsBox = document.querySelector('.smart-search-results, .search-results');
+        
+        // إذا الضغط خارج مربع البحث والنتائج
+        if (searchBox && !searchBox.contains(event.target) && 
+            resultsBox && !resultsBox.contains(event.target)) {
+            showSearchResults.value = false;
+            smartSearchResults.value = [];
+        }
+    }, 100);
+});
+// ===== إحصائيات الذاكرة (محفوظة) =====
+const memoryStats = computed(() => {
+    const stats = {
+        cacheSize: 0,
+        itemsCount: 0,
+        cachePercentage: 0,
+        pendingChanges: pendingChanges.value,
+        lastCleanup: formatTimeAgo(memoryManager.value.lastCleanup),
+        hitRatio: memoryManager.value.cacheHits + memoryManager.value.cacheMisses > 0 
+            ? Math.round((memoryManager.value.cacheHits / (memoryManager.value.cacheHits + memoryManager.value.cacheMisses)) * 100)
+            : 0
+    };
+    
+    // إحصائيات من الكاش الجديد
+    const cacheStats = Cache.stats();
+    stats.itemsCount = cacheStats.total;
+    
+    return stats;
+});
 
-        const memoryStats = computed(() => {
-            const stats = {
-                cacheSize: 0,
-                itemsCount: 0,
-                cachePercentage: 0,
-                pendingChanges: pendingChanges.value,
-                lastCleanup: formatTimeAgo(memoryManager.value.lastCleanup),
-                hitRatio: memoryManager.value.cacheHits + memoryManager.value.cacheMisses > 0 
-                    ? Math.round((memoryManager.value.cacheHits / (memoryManager.value.cacheHits + memoryManager.value.cacheMisses)) * 100)
-                    : 0
-            };
-            
-            const cacheSize = JSON.stringify(dataCache.value).length;
-            stats.cacheSize = Math.round(cacheSize / 1024);
-            stats.cachePercentage = Math.min(100, Math.round((cacheSize / memoryManager.value.maxCacheSize) * 100));
-            
-            let itemCount = 0;
-            for (const village in dataCache.value.villageData) {
-                for (const month in dataCache.value.villageData[village]) {
-                    itemCount++;
-                }
-            }
-            stats.itemsCount = itemCount;
-            
-            return stats;
-        });
+// ================== STYLES ==================
+const styles = `
+  .highlighted {
+    background-color: #fff9c4 !important;
+    transition: background-color 0.5s ease;
+  }
+  .voice-button.recording {
+    color: #f44336;
+    animation: pulse 1.5s infinite;
+  }
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+`;
+
+// إضافة الأنماط إذا لم تكن موجودة
+if (!document.getElementById('smart-search-styles')) {
+    const styleSheet = document.createElement('style');
+    styleSheet.id = 'smart-search-styles';
+    styleSheet.textContent = styles;
+    document.head.appendChild(styleSheet);
+}
+
+// ================== EXPORTS ==================
+// تصدير الدوال الجديدة للاستخدام العام
+window.smartAI = {
+    analyze: analyzeSearchQuery,
+    search: executeSmartSearch,
+    voice: startVoiceRecognition,
+    getContext: () => Context.current,
+    getCache: () => Cache.stats(),
+    clearCache: () => {
+        Cache.data.clear();
+        Cache.searches.clear();
+        showSyncIndicator?.('🧹 تم تنظيف الذاكرة', 'success');
+    }
+};
+
+// ================== INIT ==================
+// تهيئة السياق من التخزين المحلي
+Context.current.village = localStorage.getItem('lastVillage') || selectedVillage.value || null;
+Context.current.month = localStorage.getItem('lastMonth') || selectedMonth.value || 'شهر 1';
+
+console.log('✅ النظام الذكي المطور جاهز للعمل');
+console.log('📍 القرية الحالية:', Context.current.village);
+console.log('📅 الشهر الحالي:', Context.current.month);
 
         const optimizeMemory = () => {
             showSmartLoading('تحسين الذاكرة', 'جارٍ تحسين استخدام الذاكرة...', 'fas fa-microchip');
@@ -7718,7 +8283,9 @@ const scrollToRow=(idx)=>{
                 message,
                 icon,
                 progress: 0,
-                hint: 'جاري معالجة البيانات محلياً...'
+                hint: 'جاري معالجة البيانات محلياً...',
+                steps: [],
+                currentStep: 0
             };
         };
 
@@ -8124,6 +8691,13 @@ const scrollToRow=(idx)=>{
             startRetryProcessor();
             loadCacheFromStorage();
             loadThemeFromStorage();
+
+            // تشغيل النسخ الاحتياطي التلقائي
+            setInterval(() => {
+              if (isLoggedIn.value && autoBackup.value.enabled) {
+                createAutoBackup();
+              }
+            }, autoBackup.value.interval);
         });
 
         // ========== دوال PWA والتاريخ الهجري ==========
@@ -8476,7 +9050,15 @@ const scrollToRow=(idx)=>{
             exportAttendanceToExcel,
             clearAttendance,
             scrollToTable,
-            currentMonth
+            currentMonth,
+            // التحسينات الجديدة
+            dataSaverMode,
+            quickViewMode,
+            toggleDataSaverMode,
+            toggleQuickView,
+            createAutoBackup,
+            restoreFromBackup,
+            loadDataOptimized
         };
     }
 }).mount('#app');
