@@ -3741,6 +3741,86 @@ body.quick-view-mode .app-container {
 .data-saver-active .table-container {
     opacity: 0.95;
 }
+/* ============= الأزرار الستة العلوية - تصميم مكعب ============= */
+
+.top-theme-btn {
+    width: 62px;
+    height: 62px;
+    border-radius: 18px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.3);
+    position: relative;
+    top: 0;
+}
+
+.top-theme-btn:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 28px rgba(0, 0, 0, 0.35);
+}
+
+.top-theme-btn:active {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+}
+
+.top-theme-btn.active-top {
+    border: 3px solid #ffd700;
+    box-shadow: 0 0 22px rgba(255, 215, 0, 0.8);
+    transform: translateY(-3px);
+}
+
+/* ألوان كل زر */
+.normal-top {
+    background: linear-gradient(135deg, #0d6efd, #0a58ca);
+    color: white;
+}
+
+.night-top {
+    background: linear-gradient(135deg, #0b5ed7, #084298);
+    color: white;
+}
+
+.focus-top {
+    background: linear-gradient(135deg, #dc3545, #b02a37);
+    color: white;
+}
+
+.saver-top {
+    background: linear-gradient(135deg, #fd7e14, #e96a0a);
+    color: white;
+}
+
+.quick-top {
+    background: linear-gradient(135deg, #6f42c1, #5a32a3);
+    color: white;
+}
+
+.backup-top {
+    background: linear-gradient(135deg, #198754, #146c43);
+    color: white;
+}
+
+/* للجوال */
+@media (max-width: 768px) {
+    .top-theme-btn {
+        width: 52px;
+        height: 52px;
+        font-size: 24px;
+        border-radius: 16px;
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+    }
+    .top-theme-btn:hover {
+        transform: translateY(-4px);
+    }
+}
+
+/* ============= نهاية الأزرار ============= */
     </style>
 </head>
 
@@ -3829,83 +3909,118 @@ body.quick-view-mode .app-container {
 
     <!-- النظام الرئيسي -->
     <div v-if="isLoggedIn" class="app-container">
-        <!-- أزرار التحكم بالوضع -->
-        <div class="container-fluid mb-4">
-            <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(15px); padding: 20px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 15px 35px rgba(0,0,0,0.2); text-align: center; margin-top: 15px;">
+<!-- أزرار التحكم بالوضع -->
+<div class="container-fluid mb-4">
+    <div style="background: rgba(255,255,255,0.1); backdrop-filter: blur(15px); padding: 20px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.2); box-shadow: 0 15px 35px rgba(0,0,0,0.2); text-align: center; margin-top: 15px;">
+        
+        <h6 class="text-white mb-3" style="opacity: 0.8; font-size: 0.9rem;">
+            <i class="fas fa-th-large me-2"></i> لوحة التحكم السريعة 2026
+        </h6>
+
+        <!-- ========== جميع الأزرار مع مسافة علوية كبيرة ========== -->
+        <div style="margin-top: 35px;">
+            
+            <!-- الصف الأول: الأزرار الرئيسية -->
+            <div class="d-flex flex-wrap justify-content-center align-items-center gap-3">
                 
-                <h6 class="text-white mb-3" style="opacity: 0.8; font-size: 0.9rem;">
-                    <i class="fas fa-th-large me-2"></i> لوحة التحكم السريعة 2026
-                </h6>
+                <button @click="generateAIReport" class="btn btn-success shadow-sm" style="border-radius: 50px; padding: 10px 22px; font-weight: bold; border: none; color: white;">
+                    <i class="fas fa-robot me-1"></i> تقرير AI
+                </button>
+                
+                <!-- زر سجل الحضور الموحد -->
+                <button v-if="showAttendanceButton" @click="showAttendanceModal = true" class="btn btn-info shadow-sm" style="border-radius: 50px; padding: 10px 22px; font-weight: bold; border: none; color: white; background: linear-gradient(135deg, #ffb703, #fb8500);">
+                    <i class="fas fa-clock me-1"></i> سجل الحضور الموحد
+                </button>
+                
+            </div>
 
-                <div class="d-flex flex-wrap justify-content-center align-items-center gap-3">
+            <!-- مسافة بين الصفوف -->
+            <div style="height: 25px;"></div>
+
+            <!-- ========== الأزرار الستة - صفين ========== -->
+            <div style="display: flex; flex-direction: column; gap: 15px; align-items: center;">
+                
+                <!-- الصف الأول: 3 أزرار -->
+                <div style="display: flex; gap: 30px; justify-content: center; flex-wrap: wrap;">
                     
-                    <button @click="showAddModal = true" class="btn btn-info shadow-sm" style="border-radius: 50px; padding: 10px 22px; font-weight: bold; border: none; color: white;">
-                        <i class="fas fa-plus-circle me-1"></i> إضافة مشترك
-                    </button>
-
-                    <button @click="generateAIReport" class="btn btn-success shadow-sm" style="border-radius: 50px; padding: 10px 22px; font-weight: bold; border: none; color: white;">
-                        <i class="fas fa-robot me-1"></i> تقرير AI
-                    </button>
-                    
-                    <!-- زر الرسائل النصية -->
-                    <button @click="showMessagesModal = true" class="btn btn-warning shadow-sm" style="border-radius: 50px; padding: 10px 22px; font-weight: bold; border: none; color: white; background: linear-gradient(135deg, #ff6f00, #ff8f00);">
-                        <i class="fas fa-sms me-1"></i> الرسائل النصية
-                    </button>
-                    
-                    <button @click="scrollToTable" class="btn btn-primary shadow-sm" style="border-radius: 50px; padding: 10px 22px; font-weight: bold; border: none; color: white;">
-                        <i class="fas fa-database me-1"></i> السجل العام
-                    </button>
-
-                    <button @click="showMonthlyReport = true" class="btn btn-warning shadow-sm" style="border-radius: 50px; padding: 10px 22px; font-weight: bold; border: none; color: white;">
-                        <i class="fas fa-chart-line me-1"></i> التقرير الشهري
-                    </button>
-
-                    <!-- زر سجل الحضور والانصراف - يظهر فقط للمستخدم 5566 -->
-                    <button v-if="showAttendanceButton" @click="showAttendanceModal = true" class="btn btn-info shadow-sm" style="border-radius: 50px; padding: 10px 22px; font-weight: bold; border: none; color: white; background: linear-gradient(135deg, #ffb703, #fb8500);">
-                        <i class="fas fa-clock me-1"></i> سجل الحضور الموحد
-                    </button>
-                    
-                    <!-- تم إزالة زر تقرير المدير نهائياً -->
-
-                    <div style="width: 2px; height: 30px; background: rgba(255,255,255,0.2); margin: 0 10px;"></div>
-
-                    <div class="d-flex gap-2 bg-dark bg-opacity-25 p-1" style="border-radius: 50px;">
-                        <button class="btn btn-sm text-white rounded-circle" @click="changeTheme('normal')" title="صباحي">
+                    <div style="text-align: center;">
+                        <div style="font-size: 13px; color: #ffd700; margin-bottom: 10px; font-weight: bold;">طبيعي</div>
+                        <button class="top-theme-btn normal-top" @click="changeTheme('normal')" title="الوضع الطبيعي">
                             <i class="fas fa-sun"></i>
                         </button>
-                        <button class="btn btn-sm text-white rounded-circle" @click="changeTheme('night')" title="ليلي">
+                    </div>
+                    
+                    <div style="text-align: center;">
+                        <div style="font-size: 13px; color: #ffd700; margin-bottom: 10px; font-weight: bold;">ليلي</div>
+                        <button class="top-theme-btn night-top" @click="changeTheme('night')" title="الوضع الليلي">
                             <i class="fas fa-moon"></i>
                         </button>
-                        <button class="btn btn-sm text-white rounded-circle" @click="toggleFocusMode" :class="{ 'text-info': focusMode }" title="وضع التركيز">
+                    </div>
+                    
+                    <div style="text-align: center;">
+                        <div style="font-size: 13px; color: #ffd700; margin-bottom: 10px; font-weight: bold;">تركيز</div>
+                        <button class="top-theme-btn focus-top" @click="toggleFocusMode" :class="{ 'active-top': focusMode }" title="وضع التركيز">
                             <i class="fas fa-eye"></i>
                         </button>
                     </div>
-
-                    <!-- أزرار التحسينات الجديدة -->
-                    <div style="width: 2px; height: 30px; background: rgba(255,255,255,0.2); margin: 0 10px;"></div>
                     
-                    <button @click="toggleDataSaverMode" 
-                            class="btn btn-sm text-white rounded-circle" 
-                            :class="{ 'text-success': dataSaverMode }"
-                            title="وضع توفير البيانات">
-                        <i class="fas fa-battery-quarter"></i>
-                    </button>
-                    
-                    <button @click="toggleQuickView" 
-                            class="btn btn-sm text-white rounded-circle" 
-                            :class="{ 'text-info': quickViewMode }"
-                            title="وضع العرض السريع">
-                        <i class="fas fa-eye-slash"></i>
-                    </button>
-                    
-                    <button @click="createAutoBackup" 
-                            class="btn btn-sm text-white rounded-circle" 
-                            title="إنشاء نسخة احتياطية">
-                        <i class="fas fa-save"></i>
-                    </button>
                 </div>
+                
+                <!-- الصف الثاني: 3 أزرار -->
+                <div style="display: flex; gap: 30px; justify-content: center; flex-wrap: wrap;">
+                    
+                    <div style="text-align: center;">
+                        <div style="font-size: 13px; color: #ffd700; margin-bottom: 10px; font-weight: bold;">توفير</div>
+                        <button class="top-theme-btn saver-top" @click="toggleDataSaverMode" :class="{ 'active-top': dataSaverMode }" title="وضع توفير البيانات">
+                            <i class="fas fa-battery-quarter"></i>
+                        </button>
+                    </div>
+                    
+                    <div style="text-align: center;">
+                        <div style="font-size: 13px; color: #ffd700; margin-bottom: 10px; font-weight: bold;">سريع</div>
+                        <button class="top-theme-btn quick-top" @click="toggleQuickView" :class="{ 'active-top': quickViewMode }" title="وضع العرض السريع">
+                            <i class="fas fa-eye-slash"></i>
+                        </button>
+                    </div>
+                    
+                    <div style="text-align: center;">
+                        <div style="font-size: 13px; color: #ffd700; margin-bottom: 10px; font-weight: bold;">نسخ</div>
+                        <button class="top-theme-btn backup-top" @click="createAutoBackup" title="إنشاء نسخة احتياطية">
+                            <i class="fas fa-save"></i>
+                        </button>
+                    </div>
+                    
+                </div>
+                
             </div>
+
+            <!-- مسافة بين الصفوف -->
+            <div style="height: 25px;"></div>
+
+            <!-- ========== الأزرار الثلاثة السفلية ========== -->
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                
+                <!-- زر الرسائل النصية -->
+                <button @click="showMessagesModal = true" class="btn-bottom" style="border-radius: 50px; padding: 8px 20px; font-weight: bold; border: none; color: white; background: linear-gradient(135deg, #ff6f00, #ff8f00); font-size: 13px;">
+                    <i class="fas fa-sms me-1"></i> الرسائل النصية
+                </button>
+                
+                <!-- سجل المدير -->
+                <button v-if="currentUser.name === 'نصر العامري'" @click="showDirectorReport = true" class="btn-bottom" style="border-radius: 50px; padding: 8px 20px; font-weight: bold; border: none; color: white; background: linear-gradient(135deg, #dc3545, #c82333); font-size: 13px;">
+                    <i class="fas fa-chart-line me-1"></i> سجل المدير
+                </button>
+                
+                <!-- التقرير الشهري -->
+                <button @click="showMonthlyReport = true" class="btn-bottom" style="border-radius: 50px; padding: 8px 20px; font-weight: bold; border: none; color: white; background: linear-gradient(135deg, #ffb703, #fb8500); font-size: 13px;">
+                    <i class="fas fa-chart-line me-1"></i> التقرير الشهري
+                </button>
+                
+            </div>
+            
         </div>
+        
+    </div>
+</div>
 
         <!-- مؤشر التحميل الذكي -->
         <div v-if="smartLoading.show" class="smart-loading">
@@ -4123,6 +4238,140 @@ body.quick-view-mode .app-container {
             </div>
         </div>
 
+<!-- ========== نافذة سجل المدير ========== -->
+<div v-if="showDirectorReport" class="alerts-modal" @click.self="showDirectorReport = false" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.95); z-index: 99999; display: flex; align-items: center; justify-content: center;">
+    <div style="width: 95%; height: 90vh; background: linear-gradient(135deg, #001219, #03045e); border-radius: 25px; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+        
+        <!-- رأس النافذة -->
+        <div style="background: linear-gradient(135deg, #ffb703, #fb8500); padding: 12px 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2 style="margin: 0; font-size: 20px;"><i class="fas fa-chart-line"></i> سجل المدير - التقرير الشامل</h2>
+                <button @click="showDirectorReport = false" style="background: rgba(0,0,0,0.3); width: 35px; height: 35px; border-radius: 50%; border: none; color: white; font-size: 18px; cursor: pointer;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- أزرار التحكم الذكية (فوق كما هي) -->
+        <div style="display: flex; gap: 12px; padding: 12px 20px; background: rgba(0,0,0,0.3); flex-wrap: wrap; justify-content: center; border-bottom: 1px solid rgba(255,255,255,0.1);">
+            <button @click="exportDirectorReportToPDF" style="background: linear-gradient(135deg, #dc3545, #c82333); padding: 8px 20px; border-radius: 25px; border: none; color: white; font-size: 13px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-file-pdf"></i> PDF
+            </button>
+            <button @click="printDirectorReport" style="background: linear-gradient(135deg, #17a2b8, #138496); padding: 8px 20px; border-radius: 25px; border: none; color: white; font-size: 13px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-print"></i> طباعة
+            </button>
+            <button @click="showDirectorReport = false" style="background: linear-gradient(135deg, #6c757d, #5a6268); padding: 8px 20px; border-radius: 25px; border: none; color: white; font-size: 13px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                <i class="fas fa-times"></i> إغلاق
+            </button>
+        </div>
+        
+        <!-- الإحصائيات في صفوف منظمة -->
+        <div style="padding: 15px 20px; background: rgba(0,0,0,0.2); display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; border-bottom: 1px solid rgba(255,255,255,0.1);">
+            <!-- صف الإحصائيات -->
+            <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; width: 100%;">
+                <div style="background: rgba(255,255,255,0.1); padding: 8px 18px; border-radius: 20px; text-align: center;">
+                    <div style="font-size: 20px; font-weight: bold; color: #ffb703;">{{ totalSubscribersCount }}</div>
+                    <div style="font-size: 11px;">المشتركين</div>
+                </div>
+                <div style="background: rgba(255,255,255,0.1); padding: 8px 18px; border-radius: 20px; text-align: center;">
+                    <div style="font-size: 20px; font-weight: bold; color: #ffb703;">{{ formatNumber(totalRevenueAmount) }}</div>
+                    <div style="font-size: 11px;">المطلوب</div>
+                </div>
+                <div style="background: rgba(255,255,255,0.1); padding: 8px 18px; border-radius: 20px; text-align: center;">
+                    <div style="font-size: 20px; font-weight: bold; color: #00b09b;">{{ formatNumber(totalPaidAmount) }}</div>
+                    <div style="font-size: 11px;">المسلم</div>
+                </div>
+                <div style="background: rgba(255,255,255,0.1); padding: 8px 18px; border-radius: 20px; text-align: center;">
+                    <div style="font-size: 20px; font-weight: bold; color: #ff6b6b;">{{ formatNumber(totalRemainingAmount) }}</div>
+                    <div style="font-size: 11px;">المتبقي</div>
+                </div>
+                <div style="background: rgba(255,255,255,0.1); padding: 8px 18px; border-radius: 20px; text-align: center;">
+                    <div style="font-size: 20px; font-weight: bold; color: #ffb703;">{{ collectionRateValue }}%</div>
+                    <div style="font-size: 11px;">نسبة التحصيل</div>
+                </div>
+                <div style="background: rgba(0,176,155,0.2); padding: 8px 18px; border-radius: 20px; text-align: center;">
+                    <div style="font-size: 20px; font-weight: bold; color: #00b09b;">{{ formatNumber(totalConsumptionLow) }}</div>
+                    <div style="font-size: 11px;">استهلاك 1-8</div>
+                </div>
+                <div style="background: rgba(255,183,3,0.2); padding: 8px 18px; border-radius: 20px; text-align: center;">
+                    <div style="font-size: 20px; font-weight: bold; color: #ffb703;">{{ formatNumber(totalConsumptionHigh) }}</div>
+                    <div style="font-size: 11px;">استهلاك 9+</div>
+                </div>
+                <div style="background: rgba(255,255,255,0.1); padding: 8px 18px; border-radius: 20px; text-align: center;">
+                    <div style="font-size: 20px; font-weight: bold; color: #ff6b6b;">{{ highDebtCountValue }}</div>
+                    <div style="font-size: 11px;">مديونيات عالية</div>
+                </div>
+            </div>
+            
+            <!-- شريط التقدم -->
+            <div style="width: 100%; max-width: 400px; margin: 5px auto 0;">
+                <div style="background: rgba(0,0,0,0.5); border-radius: 15px; padding: 5px 12px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 11px;">
+                        <span>نسبة التحصيل</span>
+                        <span style="color: #ffb703;">{{ collectionRateValue }}%</span>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.2); border-radius: 10px; height: 8px; margin-top: 3px; overflow: hidden;">
+                        <div :style="{ width: collectionRateValue + '%', background: 'linear-gradient(90deg, #4cc9f0, #00b4d8)', height: '100%' }"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- جدول البيانات مع شريط تمرير -->
+        <div style="flex: 1; overflow: auto; padding: 15px;">
+            <div style="max-height: 100%; overflow: auto;">
+                <table style="width: 100%; border-collapse: collapse; background: rgba(255,255,255,0.03); border-radius: 12px;">
+                    <thead>
+                        <tr style="background: linear-gradient(135deg, #ffb703, #fb8500); position: sticky; top: 0;">
+                            <th style="padding: 12px 6px; font-size: 12px;">#</th>
+                            <th style="padding: 12px 6px; font-size: 12px;">العداد</th>
+                            <th style="padding: 12px 6px; font-size: 12px;">الاسم</th>
+                            <th style="padding: 12px 6px; font-size: 11px;">1-8</th>
+                            <th style="padding: 12px 6px; font-size: 11px;">9+</th>
+                            <th style="padding: 12px 6px; font-size: 11px;">المطلوب</th>
+                            <th style="padding: 12px 6px; font-size: 11px;">المسلم</th>
+                            <th style="padding: 12px 6px; font-size: 11px;">المتبقي</th>
+                            <th style="padding: 12px 6px; font-size: 11px;">النسبة</th>
+                            <th style="padding: 12px 6px; font-size: 11px;">الحالة</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(sub, index) in directorReportList" :key="index" style="border-bottom: 1px solid rgba(255,255,255,0.08);">
+                            <td style="padding: 8px 4px; text-align: center; font-size: 12px;">{{ index + 1 }}</td>
+                            <td style="padding: 8px 4px; text-align: center; font-size: 12px;">{{ sub.meterNumber }}</td>
+                            <td style="padding: 8px 4px; text-align: right; font-size: 12px;"><strong>{{ sub.name }}</strong></td>
+                            <td style="padding: 8px 4px; text-align: center; font-size: 12px; color: #00b09b;">{{ sub.consumptionLow || 0 }}</td>
+                            <td style="padding: 8px 4px; text-align: center; font-size: 12px; color: #ffb703;">{{ sub.consumptionHigh || 0 }}</td>
+                            <td style="padding: 8px 4px; text-align: center; font-size: 12px;">{{ formatNumber(sub.total) }}</td>
+                            <td style="padding: 8px 4px; text-align: center; font-size: 12px;">{{ formatNumber(sub.paid) }}</td>
+                            <td style="padding: 8px 4px; text-align: center; font-size: 12px;" :style="{ color: sub.remaining >= 5000 ? '#ff6b6b' : '#fff' }">
+                                {{ formatNumber(sub.remaining) }}
+                            </td>
+                            <td style="padding: 8px 4px; text-align: center; font-size: 12px;">{{ sub.paymentRate }}%</td>
+                            <td style="padding: 8px 4px; text-align: center; font-size: 12px;">
+                                <span v-if="sub.remaining >= 10000" style="color: #ff6b6b;">🔴</span>
+                                <span v-else-if="sub.remaining >= 5000" style="color: #ffb703;">🟠</span>
+                                <span v-else-if="sub.remaining > 0" style="color: #ffb703;">🟡</span>
+                                <span v-else style="color: #00b09b;">🟢</span>
+                            </td>
+                        </tr>
+                        <tr v-if="directorReportList.length === 0">
+                            <td colspan="10" style="padding: 60px; text-align: center; font-size: 16px;">📊 لا توجد بيانات لعرضها</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- معلومات إضافية في الأسفل -->
+        <div style="padding: 8px 15px; background: rgba(0,0,0,0.3); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; font-size: 11px;">
+            <div><i class="fas fa-calendar-alt"></i> {{ reportDateNow }}</div>
+            <div><i class="fas fa-map-marker-alt"></i> {{ selectedVillage }}</div>
+            <div><i class="fas fa-calendar-week"></i> {{ selectedMonth }}</div>
+            <div><i class="fas fa-user-tie"></i> {{ currentUser.name }}</div>
+        </div>
+    </div>
+</div>
         <!-- ========== نافذة سجل الحضور والانصراف الموحدة ========== -->
         <div v-if="showAttendanceModal" class="alerts-modal" @click.self="showAttendanceModal = false">
             <div class="alerts-container" style="max-width: 1100px;">
@@ -5014,6 +5263,7 @@ createApp({
         const showAlertsModal = ref(false);
         const showMemoryManagement = ref(false);
         const showMonthlyReport = ref(false);
+        const showDirectorReport = ref(false);
         const time = ref('');
         
         // متغيرات التاريخ واليوم
@@ -8372,7 +8622,51 @@ console.log('📅 الشهر الحالي:', Context.current.month);
             }
         };
 
-        // ========== إحصائيات الجدول ==========
+     const directorReportList = computed(() => {
+    const list = [];
+    if (villageData.value && villageData.value.length > 0) {
+        villageData.value.forEach((row, idx) => {
+            if (idx > 1 && idx < villageData.value.length - 1 && row[1] && row[1] !== 'الاسم') {
+                const total = parseFloat(row[9] || 0);
+                const paid = parseFloat(row[11] || 0);
+                const remaining = parseFloat(row[12] || 0);
+                const consumptionLow = parseFloat(row[4]) || 0;   // عمود 1-8 م³
+                const consumptionHigh = parseFloat(row[5]) || 0; // عمود 9+ م³
+                
+                list.push({
+                    meterNumber: row[0] || '-',
+                    name: row[1] || '-',
+                    total: total,
+                    paid: paid,
+                    remaining: remaining,
+                    paymentRate: total > 0 ? Math.round((paid / total) * 100) : 0,
+                    consumptionLow: consumptionLow,
+                    consumptionHigh: consumptionHigh
+                });
+            }
+        });
+    }
+    return list;
+});
+
+const totalConsumptionLow = computed(() => {
+    return directorReportList.value.reduce((sum, item) => sum + (item.consumptionLow || 0), 0);
+});
+
+const totalConsumptionHigh = computed(() => {
+    return directorReportList.value.reduce((sum, item) => sum + (item.consumptionHigh || 0), 0);
+});
+
+const totalSubscribersCount = computed(() => directorReportList.value.length);
+const totalRevenueAmount = computed(() => directorReportList.value.reduce((s, item) => s + item.total, 0));
+const totalPaidAmount = computed(() => directorReportList.value.reduce((s, item) => s + item.paid, 0));
+const totalRemainingAmount = computed(() => directorReportList.value.reduce((s, item) => s + item.remaining, 0));
+const collectionRateValue = computed(() => totalRevenueAmount.value > 0 ? Math.round((totalPaidAmount.value / totalRevenueAmount.value) * 100) : 0);
+const highDebtCountValue = computed(() => directorReportList.value.filter(item => item.remaining >= 5000).length);
+const avgDebtValue = computed(() => totalSubscribersCount.value > 0 ? Math.round(totalRemainingAmount.value / totalSubscribersCount.value) : 0);
+const activeSubscribersCount = computed(() => directorReportList.value.filter(item => item.total > 0).length);
+const reportDateNow = computed(() => new Date().toLocaleDateString('ar-EG') + ' ' + new Date().toLocaleTimeString('ar-EG'));
+
         const filteredDataWithTotal = computed(() => {
             const data = villageData.value;
             
@@ -8505,7 +8799,128 @@ console.log('📅 الشهر الحالي:', Context.current.month);
                 showSyncIndicator('فشل في تصدير قائمة المديونيات', 'error');
             }
         };
+const exportDirectorReportToPDF = async () => {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+    
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(22);
+    doc.text('مشروع مياه السوفعي', 148, 20, { align: 'center' });
+    
+    doc.setFontSize(14);
+    doc.setFont('helvetica', 'normal');
+    doc.text('سجل المدير - التقرير الشامل', 148, 30, { align: 'center' });
+    doc.text(`${selectedVillage.value} - ${selectedMonth.value}`, 148, 38, { align: 'center' });
+    doc.text(`تاريخ التقرير: ${reportDateNow.value}`, 148, 46, { align: 'center' });
+    
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'bold');
+    doc.text('الإحصائيات العامة:', 20, 60);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`إجمالي المشتركين: ${totalSubscribersCount.value}`, 20, 68);
+    doc.text(`إجمالي المطلوب: ${formatNumber(totalRevenueAmount.value)}`, 20, 76);
+    doc.text(`إجمالي المسلم: ${formatNumber(totalPaidAmount.value)}`, 20, 84);
+    doc.text(`إجمالي المتبقي: ${formatNumber(totalRemainingAmount.value)}`, 20, 92);
+    doc.text(`نسبة التحصيل: ${collectionRateValue.value}%`, 20, 100);
+    doc.text(`المديونيات العالية: ${highDebtCountValue.value}`, 20, 108);
+    doc.text(`متوسط المديونية: ${formatNumber(avgDebtValue.value)}`, 20, 116);
+    
+    const tableData = directorReportList.value.map((item, idx) => [
+        idx + 1,
+        item.meterNumber,
+        item.name,
+        formatNumber(item.total),
+        formatNumber(item.paid),
+        formatNumber(item.remaining),
+        `${item.paymentRate}%`
+    ]);
+    
+    doc.autoTable({
+        startY: 125,
+        head: [['#', 'رقم العداد', 'الاسم', 'المطلوب', 'المسلم', 'المتبقي', 'نسبة السداد']],
+        body: tableData,
+        theme: 'grid',
+        styles: { font: 'helvetica', fontSize: 9, cellPadding: 3 },
+        headStyles: { fillColor: [255, 183, 3], textColor: [0, 0, 0], fontStyle: 'bold' },
+        alternateRowStyles: { fillColor: [245, 245, 245] }
+    });
+    
+    const pageCount = doc.internal.getNumberOfPages();
+    for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+        doc.setFontSize(8);
+        doc.text(`صفحة ${i} من ${pageCount}`, 148, doc.internal.pageSize.height - 10, { align: 'center' });
+        doc.text(`© مشروع مياه السوفعي - تصميم الأستاذ نصر العامري`, 148, doc.internal.pageSize.height - 5, { align: 'center' });
+    }
+    
+    doc.save(`سجل_المدير_${selectedVillage.value}_${selectedMonth.value}.pdf`);
+};
 
+const printDirectorReport = () => {
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`
+        <html dir="rtl">
+        <head>
+            <title>سجل المدير - ${selectedVillage.value} - ${selectedMonth.value}</title>
+            <style>
+                body { font-family: 'Tajawal', sans-serif; padding: 20px; }
+                h1 { color: #ffb703; text-align: center; }
+                .stats { display: flex; flex-wrap: wrap; gap: 15px; margin: 20px 0; }
+                .stat-box { background: #f5f5f5; padding: 15px; border-radius: 10px; min-width: 150px; text-align: center; }
+                table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                th { background: #ffb703; padding: 12px; text-align: center; }
+                td { padding: 10px; text-align: center; border-bottom: 1px solid #ddd; }
+                .footer { margin-top: 30px; text-align: center; color: #666; }
+                @media print {
+                    .no-print { display: none; }
+                }
+            </style>
+        </head>
+        <body>
+            <h1>مشروع مياه السوفعي</h1>
+            <h3 style="text-align: center;">سجل المدير - التقرير الشامل</h3>
+            <p style="text-align: center;">${selectedVillage.value} - ${selectedMonth.value}</p>
+            <p style="text-align: center;">تاريخ التقرير: ${reportDateNow.value}</p>
+            
+            <div class="stats">
+                <div class="stat-box"><strong>إجمالي المشتركين</strong><br>${totalSubscribersCount.value}</div>
+                <div class="stat-box"><strong>إجمالي المطلوب</strong><br>${formatNumber(totalRevenueAmount.value)}</div>
+                <div class="stat-box"><strong>إجمالي المسلم</strong><br>${formatNumber(totalPaidAmount.value)}</div>
+                <div class="stat-box"><strong>إجمالي المتبقي</strong><br>${formatNumber(totalRemainingAmount.value)}</div>
+                <div class="stat-box"><strong>نسبة التحصيل</strong><br>${collectionRateValue.value}%</div>
+                <div class="stat-box"><strong>المديونيات العالية</strong><br>${highDebtCountValue.value}</div>
+            </div>
+            
+            <table border="1" cellpadding="8" cellspacing="0" style="width:100%; border-collapse:collapse; margin-top:20px;">
+                <thead>
+                    <tr style="background:#ffb703;"><th>#</th><th>رقم العداد</th><th>الاسم</th><th>المطلوب</th><th>المسلم</th><th>المتبقي</th><th>نسبة السداد</th></tr>
+                </thead>
+                <tbody>
+                    ${directorReportList.value.map((item, idx) => `
+                        <tr>
+                            <td>${idx + 1}</td>
+                            <td>${item.meterNumber}</td>
+                            <td>${item.name}</td>
+                            <td>${formatNumber(item.total)}</td>
+                            <td>${formatNumber(item.paid)}</td>
+                            <td style="color: ${item.remaining >= 5000 ? 'red' : 'black'}">${formatNumber(item.remaining)}</td>
+                            <td>${item.paymentRate}%</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+            
+            <div class="footer">
+                <p>© مشروع مياه السوفعي - تصميم الأستاذ نصر العامري</p>
+            </div>
+            <div class="no-print" style="text-align: center; margin-top: 20px;">
+                <button onclick="window.print()" style="padding: 10px 30px; background: #ffb703; border: none; border-radius: 10px; cursor: pointer;">طباعة التقرير</button>
+            </div>
+        </body>
+        </html>
+    `);
+    printWindow.document.close();
+};
         const exportToExcel = () => {
             try {
                 const dataForExport = villageData.value.map(row => [...row]);
@@ -9051,14 +9466,31 @@ console.log('📅 الشهر الحالي:', Context.current.month);
             clearAttendance,
             scrollToTable,
             currentMonth,
-            // التحسينات الجديدة
-            dataSaverMode,
+                        // التحسينات الجديدة
+                        dataSaverMode,
             quickViewMode,
             toggleDataSaverMode,
             toggleQuickView,
             createAutoBackup,
             restoreFromBackup,
-            loadDataOptimized
+            loadDataOptimized,
+            
+            // متغيرات ودوال تقرير المدير
+            showDirectorReport,
+            directorReportList,
+            totalSubscribersCount,
+            totalRevenueAmount,
+            totalPaidAmount,
+            totalRemainingAmount,
+            collectionRateValue,
+            highDebtCountValue,
+            avgDebtValue,
+            activeSubscribersCount,
+            reportDateNow,
+            totalConsumptionLow,
+            totalConsumptionHigh,
+            exportDirectorReportToPDF,
+            printDirectorReport
         };
     }
 }).mount('#app');
