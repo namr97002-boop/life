@@ -4,7 +4,7 @@
   "description": "نظام مياه السوفعي - المزامنة الفورية الذكية 2026",
   "lang": "ar",
   "dir": "rtl",
-  "start_url": "/life/",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#03045e",
   "theme_color": "#0077b6",
@@ -13,6 +13,11 @@
     {
       "src": "https://i.postimg.cc/wTffqvP6/1776187446226.png",
       "sizes": "48x48",
+      "type": "image/png"
+    },
+    {
+      "src": "https://i.postimg.cc/wTffqvP6/1776187446226.png",
+      "sizes": "72x72",
       "type": "image/png"
     },
     {
