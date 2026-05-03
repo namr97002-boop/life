@@ -1,90 +1,65 @@
-// ==========================================
-// Service Worker النهائي - نظام مياه السوفعي
-// ==========================================
+const CACHE_NAME = 'login-cache-v2';
+const LOGIN_URL = '/life/index.html';
 
-const CACHE_NAME = 'soufai-v3.0'; // غيّر الرقم عند كل تحديث
-
-// الملفات التي تعمل بدون إنترنت
+// الملفات التي نخزنها
 const urlsToCache = [
-  './',
-  './index.html',
-  './manifest.json',
-
-  // ❌ لا تحتاجها لأن كل شيء في index.html واحد
-  // './css/style.css',    
-  // './js/app.js',
-
-  // مكتبات خارجية (CDN)
-  'https://unpkg.com/vue@3/dist/vue.global.js',
-  'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js',
-  'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js',
-  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
+  '/life/',
+  '/life/index.html'
 ];
 
-// ============================
-// التثبيت (تحميل أول مرة)
-// ============================
+// التثبيت - نخزن الملفات أول مرة
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => {
-        console.log('📦 تخزين الملفات أوفلاين...');
-        return cache.addAll(urlsToCache);
-      })
-      .then(() => self.skipWaiting())
+    caches.open(CACHE_NAME).then(cache => {
+      console.log('📦 جاري تخزين شاشة الدخول...');
+      return cache.addAll(urlsToCache);
+    }).then(() => self.skipWaiting())
   );
 });
 
-// ============================
-// التفعيل + حذف الكاش القديم
-// ============================
+// التفعيل - ننظف الكاش القديم
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(
+    caches.keys().then(keys => {
+      return Promise.all(
         keys.map(key => {
           if (key !== CACHE_NAME) {
-            console.log('🗑 حذف كاش قديم:', key);
+            console.log('🗑 حذف الكاش القديم:', key);
             return caches.delete(key);
           }
         })
-      )
-    ).then(() => self.clients.claim())
+      );
+    }).then(() => self.clients.claim())
   );
 });
 
-// ============================
-// جلب الملفات (Cache First)
-// ============================
+// الجلب - أهم جزء لشاشة الدخول
 self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request).then(cached => {
-
-      // لو موجود بالكاش → استخدمه
-      if (cached) return cached;
-
-      // لو غير موجود → من الشبكة + خزنه
-      return fetch(event.request).then(response => {
-        return caches.open(CACHE_NAME).then(cache => {
-          cache.put(event.request, response.clone());
-          return response;
-        });
-      }).catch(() => {
-        // في حال انقطاع النت وطلب صفحة
-        if (event.request.mode === 'navigate') {
-          return caches.match('./index.html');
+  const url = new URL(event.request.url);
+  
+  // فقط نتعامل مع ملفات موقعنا
+  if (url.pathname.startsWith('/life')) {
+    event.respondWith(
+      caches.match(event.request).then(cachedResponse => {
+        // إذا كان الملف في الكاش → استخدمه فوراً
+        if (cachedResponse) {
+          console.log('✅ من الكاش:', url.pathname);
+          return cachedResponse;
         }
-      });
-
-    })
-  );
-});
-
-// ============================
-// دعم التحديث الفوري
-// ============================
-self.addEventListener('message', event => {
-  if (event.data === 'SKIP_WAITING') {
-    self.skipWaiting();
+        
+        // وإلا حاول تجلبه من النت
+        return fetch(event.request).then(networkResponse => {
+          // خزنه في الكاش للمرة القادمة
+          return caches.open(CACHE_NAME).then(cache => {
+            cache.put(event.request, networkResponse.clone());
+            return networkResponse;
+          });
+        }).catch(() => {
+          // إذا فشل النت والكاش → ارجع شاشة الدخول
+          console.log('⚠️ لا نت ولا كاش → شاشة الدخول');
+          return caches.match(LOGIN_URL);
+        });
+      })
+    );
   }
 });
