@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+<link rel="manifest" href="/life/manifest.json">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="description" content="نظام مياه السوفعي - المزامنة الفورية الذكية 2026">
@@ -27,7 +28,17 @@
     
     <!-- External Resources -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+@font-face {
+    font-family: 'Tajawal';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local('Tajawal'),
+         url('fonts/Tajawal-Regular.woff2') format('woff2'),
+         url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400&display=swap') format('woff2');
+}
+</style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -11144,6 +11155,32 @@ if (typeof scrollToRow === 'function') {
         });
     };
     console.log("✅ تم تحديث دالة scrollToRow");
+}
+</script>
+<script>
+// تسجيل Service Worker - ليعمل الموقع بدون إنترنت
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/life/sw.js')
+        .then(reg => {
+            console.log('✅ Service Worker مسجل بنجاح');
+            
+            // التحقق من التحديثات
+            reg.onupdatefound = () => {
+                const installingWorker = reg.installing;
+                installingWorker.onstatechange = () => {
+                    if (installingWorker.state === 'installed') {
+                        if (navigator.serviceWorker.controller) {
+                            console.log('🔄 تحديث جديد متاح');
+                        } else {
+                            console.log('✅ جاهز للعمل بدون إنترنت');
+                        }
+                    }
+                };
+            };
+        })
+        .catch(err => {
+            console.error('❌ فشل تسجيل Service Worker:', err);
+        });
 }
 </script>
 
